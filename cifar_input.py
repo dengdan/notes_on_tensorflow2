@@ -1,7 +1,6 @@
 import tensorflow as tf
 from tensorflow import keras
 import numpy as np 
-
 def tf_preprocess(img, label, input_size, is_training):
     img = tf.cast(img, tf.float32)
     if is_training:
@@ -17,7 +16,7 @@ def tf_preprocess(img, label, input_size, is_training):
                 img, input_size, input_size)
     img = tf.image.per_image_standardization(img)
     return img, label
- 
+
 def get_dataset(is_training = True, input_size = 32, batch_size = 1):
     # load cifar10 dataset
     cifar10 = keras.datasets.cifar10
@@ -52,3 +51,4 @@ def get_dataset(is_training = True, input_size = 32, batch_size = 1):
         
     dataset = dataset.batch(batch_size = batch_size)
     return dataset
+
