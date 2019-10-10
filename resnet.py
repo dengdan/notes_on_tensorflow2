@@ -1,3 +1,6 @@
+import logging, os
+logging.disable(logging.WARNING)
+os.environ["TF_CPP_MIN_LOG_LEVEL"] = "3" 
 import tensorflow as tf
 import tensorflow.keras as keras
 layers = keras.layers
@@ -78,4 +81,9 @@ eval_batch_size = 100
 ds_train = cifar_input.get_dataset(is_training = True, input_size = input_size, batch_size = train_batch_size)
 ds_eval = cifar_input.get_dataset(is_training = False, input_size = input_size, batch_size = eval_batch_size)
 
-model.fit(x = ds_train, epochs=30, validation_data = ds_eval)
+import util
+run_logdir = util.io.get_absolute_path("~/temp/no-use/keras/resent")
+tensorboard_cb = keras.callbacks.TensorBoard(run_logdir)
+checkpoint_cb = keras.callbacks.ModelCheckpoint(run_logdir)
+
+model.fit(x = ds_train, epochs=300, validation_data = ds_eval, callbacks=[checkpoint_cb, tensorboard_cb])
